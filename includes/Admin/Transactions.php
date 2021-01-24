@@ -136,7 +136,7 @@ class Transactions extends \WP_List_Table {
     function get_transaction_list() {
         $merchant_code = get_option( 'mr_pay_merchant_code' );
 
-        $transactions = json_decode( file_get_contents( 'https://members.mrpaylater.com/wordpress/list?merchant=S6Re8T3YzAI-' ) );
+        $transactions = json_decode( file_get_contents( "https://members.mrpaylater.com/wordpress/list?merchant={$merchant_code}" ) );
 
         return [
             'transactions' => $transactions,
