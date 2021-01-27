@@ -25,7 +25,8 @@ function wc_offline_gateway_init() {
 
             // Define user set variables
             $this->title        = $this->get_option( 'title' );
-            $this->description  = $this->get_option( 'description' );
+            // $this->description  = $this->get_option( 'description' );
+            $this->description  = 'Installment Payment with 0% interest. Confirmation will be upon completion of RM 1 authorization.';
             $this->instructions = $this->get_option( 'instructions', $this->description );
 
             // Actions
@@ -58,13 +59,13 @@ function wc_offline_gateway_init() {
                     'desc_tip'    => true,
                 ),
 
-                'description'  => array(
-                    'title'       => __( 'Description', 'mrpay' ),
-                    'type'        => 'textarea',
-                    'description' => __( 'Payment method description that the customer will see on your checkout.', 'mrpay' ),
-                    'default'     => __( 'Pay by MR PAY LATER method.', 'mrpay' ),
-                    'desc_tip'    => true,
-                ),
+                // 'description'  => array(
+                //     'title'       => __( 'Description', 'mrpay' ),
+                //     'type'        => 'textarea',
+                //     'description' => __( 'Payment method description that the customer will see on your checkout.', 'mrpay' ),
+                //     'default'     => __( 'Installment Payment with 0% interest. Confirmation will be upon completion of RM 1 authorization.', 'mrpay' ),
+                //     'desc_tip'    => true,
+                // ),
 
                 'instructions' => array(
                     'title'       => __( 'Instructions', 'mrpay' ),

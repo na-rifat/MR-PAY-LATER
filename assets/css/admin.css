@@ -12,3 +12,6 @@
 .mr-pay-transaction-failed * {
     color: white!important;
 } */
+.mr-pay-transactions{
+    width: 98%;
+}

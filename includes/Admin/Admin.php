@@ -33,7 +33,7 @@ class Admin {
     function gateway_plugin_links( $links ) {
 
         $plugin_links = array(
-            '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=mrpaylater' ) . '">' . __( 'Configure', 'wc-gateway-offline' ) . '</a>',
+            '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=mrpaylater' ) . '">' . __( 'Configure', 'mrpay' ) . '</a>',
         );
 
         return array_merge( $plugin_links, $links );
@@ -79,9 +79,20 @@ class Admin {
          * Merchant code verifcation
          */
         if ( sizeof( $merchant_code ) == 0 ) {
+            update_option( 'mr_pay_merchant_code', '' );
             wp_send_json_error(
                 [
-                    'message' => __( 'Invalid merchant code!' ),
+                    'message' => __( 'Invalid merchant code!', 'mrpay' ),
+                ]
+            );
+            return;
+        }
+
+        if ( file_get_contents( "https://members.mrpaylater.com/wordpress/list?merchant={$merchant_code}" ) == 'Record not found.' ) {
+            update_option( 'mr_pay_merchant_code', '' );
+            wp_send_json_error(
+                [
+                    'message' => __( 'Invalid merchant code!', 'mrpay' ),
                 ]
             );
             return;
@@ -91,7 +102,7 @@ class Admin {
 
         wp_send_json_success(
             [
-                'message' => __( 'Merchant code saved successfully!' ),
+                'message' => __( 'Merchant code saved successfully!', 'mrpay' ),
             ]
         );
         return;
@@ -113,7 +124,7 @@ class Admin {
      * @return void
      */
     public function admin_page() {
-        $transactions = new Transactions();        
+        $transactions = new Transactions();
         include __DIR__ . "/views/admin_page.php";
     }
 
@@ -129,22 +140,4 @@ class Admin {
             return true;
         }
     }
-
-    
 }
-
-//     'merchant_code' => 'S7Rq8i3YzAi0',
-// 'invoice_number' => '', //need to be unique and max 20 character,
-// 'customer_name' => 'test fixes',
-// 'customer_email' => 'test@mail.com',
-// 'customer_phone' => '0122323899', //remove any +6 (country code from the phone number)
-// 'amount' => 30,
-// 'remark' => 'product name' //series of product need to separate by comma
-
-// merchant_code:S7Rq8i3YzAi0
-// invoice_number:1000
-// customer_name:test fixes
-// customer_email:test@mail.com
-// customer_phone:0122323899
-// amount:30
-// remark:product

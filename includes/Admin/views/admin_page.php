@@ -1,7 +1,8 @@
 <div class="mr-pay-merchant-settings">
     <h2>MR PAY LATER</h2>
+    <?php echo '<a class="button button-large" href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=mrpaylater' ) . '">' . __( 'Configure in Woocommerce >>', 'mrpay' ) . '</a>' ?>
     <hr />
-    <h4>contact admin@mrpaylater to request merchant code</h4>
+    <h4>Contact <a href="mailto:admin@mrpaylater">admin@mrpaylater</a> to request merchant code.</h4>
     <form action="">
         <table class="form-table">
             <tbody>

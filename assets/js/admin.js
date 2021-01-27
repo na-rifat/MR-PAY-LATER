@@ -29,6 +29,7 @@
                         );
                     }, 1500);
                 } else {
+                    self.find(`input[type="text"]`).val(``);
                     alert(response.data.message);
                 }
             },

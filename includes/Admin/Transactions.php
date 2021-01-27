@@ -91,18 +91,37 @@ class Transactions extends \WP_List_Table {
      *
      *
      *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * @since 3.1.0
      *
      * @param object|array $item The current item
      */
     public function single_row( $item ) {
         // complete the order
-        if ( $item->status == 'paid' ) {
-            $order = wc_get_order( $item->invoice_number );
+        $order_id = str_replace( 'wp-', '', $item->invoice_number );
+        switch ( $item->status ) {
+            case 'success':
+            case 'paid':
+                $order = wc_get_order( $order_id );
 
-            if ( ! empty( $order ) ) {
-                $order->update_status( 'completed' );
-            }
+                if ( ! empty( $order ) ) {
+                    $order->update_status( 'completed' );
+                }
+                break;
+            case 'fail':
+                $order = wc_get_order( $order_id );
+                if ( ! empty( $order ) ) {
+                    $order->update_status( 'failed' );
+                }
+                break;
+            default:
+                break;
         }
 
         $class = $this->status2class( $item->status );
@@ -140,7 +159,8 @@ class Transactions extends \WP_List_Table {
 
         return [
             'transactions' => $transactions,
-            'count'        => sizeof( $transactions ),
+            // 'count'        => sizeof( gettype( $transactions ) == ( 'objet' || 'array' ) ? $transactions : [] ),
+            'count'        => $transactions == NULL ? 0 : sizeof( $transactions ),
         ];
     }
 
