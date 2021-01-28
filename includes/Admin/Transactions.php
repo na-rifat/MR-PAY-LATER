@@ -107,6 +107,12 @@ class Transactions extends \WP_List_Table {
         $order_id = str_replace( 'wp-', '', $item->invoice_number );
         switch ( $item->status ) {
             case 'success':
+                $order = wc_get_order( $order_id );
+
+                if ( ! empty( $order ) ) {
+                    $order->update_status( 'processing' );
+                }
+                break;
             case 'paid':
                 $order = wc_get_order( $order_id );
 

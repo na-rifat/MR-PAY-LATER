@@ -78,7 +78,7 @@
     function load() {
         return Mr_pay::init();
     }
-   
+
     load();
     return;
 ?>
