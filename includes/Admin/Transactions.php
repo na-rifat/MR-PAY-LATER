@@ -104,31 +104,7 @@ class Transactions extends \WP_List_Table {
      */
     public function single_row( $item ) {
         // complete the order
-        $order_id = str_replace( 'wp-', '', $item->invoice_number );
-        switch ( $item->status ) {
-            case 'success':
-                $order = wc_get_order( $order_id );
-
-                if ( ! empty( $order ) ) {
-                    $order->update_status( 'processing' );
-                }
-                break;
-            case 'paid':
-                $order = wc_get_order( $order_id );
-
-                if ( ! empty( $order ) ) {
-                    $order->update_status( 'completed' );
-                }
-                break;
-            case 'fail':
-                $order = wc_get_order( $order_id );
-                if ( ! empty( $order ) ) {
-                    $order->update_status( 'failed' );
-                }
-                break;
-            default:
-                break;
-        }
+        
 
         $class = $this->status2class( $item->status );
         echo "<tr class='{$class}'>";
@@ -164,8 +140,7 @@ class Transactions extends \WP_List_Table {
         $transactions = json_decode( file_get_contents( "https://members.mrpaylater.com/wordpress/list?merchant={$merchant_code}" ) );
 
         return [
-            'transactions' => $transactions,
-            // 'count'        => sizeof( gettype( $transactions ) == ( 'objet' || 'array' ) ? $transactions : [] ),
+            'transactions' => $transactions,            
             'count'        => $transactions == NULL ? 0 : sizeof( $transactions ),
         ];
     }

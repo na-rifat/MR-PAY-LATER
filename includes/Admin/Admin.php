@@ -13,6 +13,9 @@ class Admin {
         add_action( 'admin_menu', [$this, 'register_menu'] );
         add_action( 'wp_ajax_mr_pay_save_merchant_code', [$this, 'mr_pay_save_merchant_code'] );
         add_action( 'init', [$this, 'handle_gateway'] );
+        add_filter( 'init', [$this, 'wpex_wc_register_post_statuses'] );
+        add_filter( 'init', [$this, 'update_status'] );
+        add_filter( 'wc_order_statuses', [$this, 'wpex_wc_add_order_statuses'] );
     }
 
     public function handle_gateway() {
@@ -138,6 +141,63 @@ class Admin {
             return false;
         } else {
             return true;
+        }
+    }
+
+    // Register New Order Statuses
+    public function wpex_wc_register_post_statuses() {
+        register_post_status( 'wc-success', array(
+            'label'                     => _x( 'Success', 'WooCommerce Order status', 'mrpay' ),
+            'paid'                      => true,
+            'public'                    => true,
+            'exclude_from_search'       => false,
+            'show_in_admin_all_list'    => true,
+            'show_in_admin_status_list' => true,
+            'label_count'               => _n_noop( 'Success (%s)', 'Success (%s)', 'mrpay' ),
+        ) );
+    }
+
+    // Add New Order Statuses to WooCommerce
+    public function wpex_wc_add_order_statuses( $order_statuses ) {
+        $order_statuses['wc-success'] = _x( 'Success', 'WooCommerce Order status', 'mrpay' );
+        return $order_statuses;
+    }
+
+    public function update_status() {
+        $merchant_code = get_option( 'mr_pay_merchant_code', '' );
+
+        if ( empty( $merchant_code ) ) {
+            return;
+        }
+
+        $transactions = json_decode( file_get_contents( "https://members.mrpaylater.com/wordpress/list?merchant={$merchant_code}" ) );
+
+        foreach ( $transactions as $transaction ) {
+            $order_id = str_replace( 'wp-', '', $transaction->invoice_number );
+            switch ( $transaction->status ) {
+                case 'success':
+                    $order = wc_get_order( $order_id );
+
+                    if ( ! empty( $order ) ) {
+                        $order->update_status( 'success' );
+                    }
+                    break;
+                case 'paid':
+                    $order = wc_get_order( $order_id );
+
+                    if ( ! empty( $order ) ) {
+                        $order->update_status( 'completed' );
+                    }
+                    break;
+                case 'fail':
+                    $order = wc_get_order( $order_id );
+                    if ( ! empty( $order ) ) {
+                        $order->update_status( 'failed' );
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
