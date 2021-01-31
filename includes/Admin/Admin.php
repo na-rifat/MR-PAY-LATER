@@ -178,7 +178,7 @@ class Admin {
         //     return;
         // }
 
-        if ( ! isset( $_GET['post_type'] ) && $_GET['post_type'] != 'shop_order' ) {
+        if ( in_array( 'post_type', $_GET ) && $_GET['post_type'] != 'shop_order' ) {
             return;
         }
 
