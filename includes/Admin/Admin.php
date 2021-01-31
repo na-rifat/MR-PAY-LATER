@@ -170,6 +170,18 @@ class Admin {
             return;
         }
 
+        // if ( ! isset( $_GET['post_type'] ) && ! isset( $_GET['page'] ) ) {
+        //     return;
+        // }
+
+        // if ( $_GET['post_type'] != 'shop_order' && $_GET['page'] != 'wc-admin' ) {
+        //     return;
+        // }
+
+        if ( ! isset( $_GET['post_type'] ) && $_GET['post_type'] != 'shop_order' ) {
+            return;
+        }
+
         $transactions = json_decode( file_get_contents( "https://members.mrpaylater.com/wordpress/list?merchant={$merchant_code}" ) );
 
         foreach ( $transactions as $transaction ) {
