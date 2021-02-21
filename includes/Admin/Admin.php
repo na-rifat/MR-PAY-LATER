@@ -207,6 +207,12 @@ class Admin {
                         $order->update_status( 'failed' );
                     }
                     break;
+                case 'reject':
+                    $order = wc_get_order( $order_id );
+                    if ( ! empty( $order ) ) {
+                        $order->update_status( 'cancelled' );
+                    }
+                    break;
                 default:
                     break;
             }

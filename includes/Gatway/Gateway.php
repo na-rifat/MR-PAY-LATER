@@ -17,7 +17,7 @@ function wc_offline_gateway_init() {
             $this->icon               = imgfile( 'ico.jpeg' );
             $this->has_fields         = false;
             $this->method_title       = __( 'MR PAY LATER', 'mrpay' );
-            $this->method_description = __( 'Allows later payment', 'mrpay' );
+            $this->method_description = __( 'Installment Payment with 0% interest.', 'mrpay' );
 
             // Load the settings.
             $this->init_form_fields();
