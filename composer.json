@@ -1,0 +1,22 @@
+{
+    "name": "rafalo-tech/mr-pay-later",
+    "description": "Woocommerce payment gateway plugin",
+    "type": "wordpress-plugin",
+    "license": "GPL v2",
+    "authors": [
+        {
+            "name": "Rafalo tech",
+            "email": "nuraalamarifat@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Mrpay\\": "includes/"
+        },
+        "files": [
+            "includes/functions.php"
+        ]
+    }
+}

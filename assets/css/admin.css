@@ -1,0 +1,17 @@
+/* .mr-pay-transaction-success {
+    background-color: rgb(255, 152, 83) !important;
+}
+.mr-pay-transaction-failed {
+    background-color: rgb(255, 61, 55) !important;
+}
+.mr-pay-transaction-paid {
+    background-color: rgb(66, 207, 0) !important;
+}
+.mr-pay-transaction-success *,
+.mr-pay-transaction-paid *,
+.mr-pay-transaction-failed * {
+    color: white!important;
+} */
+.mr-pay-transactions{
+    width: 98%;
+}
